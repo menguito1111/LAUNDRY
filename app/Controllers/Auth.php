@@ -35,6 +35,8 @@ class Auth extends BaseController
                 return redirect()->to(site_url('admin/dashboard'));
             } elseif ($user['role'] === 'staff') {
                 return redirect()->to(site_url('staff/dashboard'));
+            } elseif ($user['role'] === 'customer') {
+                return redirect()->to(site_url('customer/dashboard'));
             }
         }
 

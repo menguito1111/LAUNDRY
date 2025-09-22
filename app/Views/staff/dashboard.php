@@ -8,7 +8,7 @@
             <div class="card-body">
                 <h5 class="card-title">Assigned Orders</h5>
                 <p class="card-text">Check laundry orders assigned to you.</p>
-                <a href="#" class="btn btn-light btn-sm">View</a>
+                <a href="<?= site_url('staff/orders') ?>" class="btn btn-light btn-sm">View</a>
             </div>
         </div>
     </div>
@@ -18,7 +18,7 @@
             <div class="card-body">
                 <h5 class="card-title">Update Status</h5>
                 <p class="card-text">Update washing, drying, or delivery status.</p>
-                <a href="#" class="btn btn-light btn-sm">Update</a>
+                <a href="<?= site_url('staff/orders') ?>" class="btn btn-light btn-sm">Update</a>
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
             <div class="card-body">
                 <h5 class="card-title">Report Issues</h5>
                 <p class="card-text">Submit complaints or machine problems.</p>
-                <a href="#" class="btn btn-light btn-sm">Report</a>
+                <a href="<?= site_url('staff/issues/report') ?>" class="btn btn-light btn-sm">Report</a>
             </div>
         </div>
     </div>
