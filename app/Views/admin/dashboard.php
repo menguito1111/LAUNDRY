@@ -5,6 +5,46 @@
     <i class="bi bi-speedometer2 me-2"></i> Admin Dashboard
 </h2>
 
+<!-- Statistics Row -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card bg-success text-white shadow-lg">
+            <div class="card-body text-center">
+                <i class="bi bi-people-fill display-4 mb-2"></i>
+                <h3><?= $total_users ?></h3>
+                <p class="mb-0">Total Users</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white shadow-lg">
+            <div class="card-body text-center">
+                <i class="bi bi-cart-check-fill display-4 mb-2"></i>
+                <h3><?= $total_orders ?></h3>
+                <p class="mb-0">Total Orders</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white shadow-lg">
+            <div class="card-body text-center">
+                <i class="bi bi-hourglass-split display-4 mb-2"></i>
+                <h3><?= $pending_orders ?></h3>
+                <p class="mb-0">Pending Orders</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-danger text-white shadow-lg">
+            <div class="card-body text-center">
+                <i class="bi bi-exclamation-triangle-fill display-4 mb-2"></i>
+                <h3><?= $open_complaints ?></h3>
+                <p class="mb-0">Open Complaints</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row g-4">
 
     <!-- Manage Users -->
@@ -67,6 +107,36 @@
         </div>
     </div>
 
+</div>
+
+<!-- Quick Actions -->
+<div class="row g-4 mt-4">
+    <div class="col-md-6">
+        <div class="card shadow-lg border-0">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-qr-code me-2"></i> Barcode Scanner
+                </h5>
+                <p class="card-text">Scan order barcodes for quick access</p>
+                <a href="<?= site_url('barcode/scan') ?>" class="btn btn-primary btn-sm">
+                    <i class="bi bi-camera me-1"></i> Open Scanner
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-lg border-0">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-chat-dots me-2"></i> Support Chat
+                </h5>
+                <p class="card-text">Communicate with staff and customers</p>
+                <a href="<?= site_url('chat') ?>" class="btn btn-primary btn-sm">
+                    <i class="bi bi-chat-square-text me-1"></i> Open Chat
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Extra styles -->

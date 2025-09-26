@@ -6,14 +6,21 @@
         <i class="bi bi-receipt-cutoff me-2"></i> Orders
     </h2>
     <div>
+        <a href="<?= site_url('barcode/scan') ?>" class="btn btn-outline-secondary btn-sm me-2">
+            <i class="bi bi-qr-code me-1"></i> Scan Barcode
+        </a>
         <a href="#" class="btn btn-outline-secondary btn-sm me-2">
             <i class="bi bi-download me-1"></i> Export
         </a>
-        <a href="#" class="btn btn-primary btn-sm">
-            <i class="bi bi-plus-circle me-1"></i> New Order
-        </a>
     </div>
 </div>
+
+<?php if (session()->getFlashdata('success')): ?>
+<div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
+<?php endif; ?>
+<?php if (session()->getFlashdata('error')): ?>
+<div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
+<?php endif; ?>
 
 <div class="card shadow-lg border-0 rounded-3">
     <div class="card-body">
@@ -28,62 +35,61 @@
                         <th>Customer</th>
                         <th>Status</th>
                         <th>Total</th>
-                        <th>Date</th>
+                        <th>Due Date</th>
+                        <th>Created</th>
                         <th class="text-end">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>ORD-0001</strong></td>
-                        <td>John Doe</td>
-                        <td>
-                            <span class="badge bg-info text-dark px-3 py-2 rounded-pill">
-                                <i class="bi bi-hourglass-split me-1"></i> Processing
-                            </span>
-                        </td>
-                        <td><strong>$12.50</strong></td>
-                        <td>2025-09-18</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-sm btn-outline-secondary me-2">
-                                <i class="bi bi-eye"></i> View
-                            </a>
-                            <a href="#" class="btn btn-sm btn-primary">
-                                <i class="bi bi-pencil-square"></i> Update
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>ORD-0002</strong></td>
-                        <td>Jane Smith</td>
-                        <td>
-                            <span class="badge bg-success px-3 py-2 rounded-pill">
-                                <i class="bi bi-check-circle me-1"></i> Completed
-                            </span>
-                        </td>
-                        <td><strong>$18.00</strong></td>
-                        <td>2025-09-17</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-sm btn-outline-secondary me-2">
-                                <i class="bi bi-eye"></i> View
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>ORD-0003</strong></td>
-                        <td>Michael Reyes</td>
-                        <td>
-                            <span class="badge bg-danger px-3 py-2 rounded-pill">
-                                <i class="bi bi-x-circle me-1"></i> Cancelled
-                            </span>
-                        </td>
-                        <td><strong>$9.75</strong></td>
-                        <td>2025-09-15</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-sm btn-outline-secondary">
-                                <i class="bi bi-eye"></i> View
-                            </a>
-                        </td>
-                    </tr>
+                    <?php if (!empty($orders)): ?>
+                        <?php foreach ($orders as $order): ?>
+                        <tr>
+                            <td><strong>ORD-<?= str_pad($order['id'], 4, '0', STR_PAD_LEFT) ?></strong></td>
+                            <td><?= esc($order['username']) ?></td>
+                            <td>
+                                <?php
+                                $statusClasses = [
+                                    'pending' => 'bg-warning text-dark',
+                                    'washing' => 'bg-info text-dark', 
+                                    'ready' => 'bg-primary',
+                                    'delivered' => 'bg-success'
+                                ];
+                                $statusIcons = [
+                                    'pending' => 'bi-clock',
+                                    'washing' => 'bi-arrow-repeat',
+                                    'ready' => 'bi-check-circle',
+                                    'delivered' => 'bi-truck'
+                                ];
+                                ?>
+                                <span class="badge <?= $statusClasses[$order['status']] ?? 'bg-secondary' ?> px-3 py-2 rounded-pill">
+                                    <i class="bi <?= $statusIcons[$order['status']] ?? 'bi-question-circle' ?> me-1"></i> 
+                                    <?= ucfirst($order['status']) ?>
+                                </span>
+                            </td>
+                            <td><strong>$<?= number_format($order['total_price'], 2) ?></strong></td>
+                            <td><?= date('M d, Y', strtotime($order['due_date'])) ?></td>
+                            <td><?= date('M d, Y', strtotime($order['created_at'])) ?></td>
+                            <td class="text-end">
+                                <a href="<?= site_url('barcode/order/' . $order['id']) ?>" class="btn btn-sm btn-outline-info me-1" title="Generate Barcode">
+                                    <i class="bi bi-qr-code"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-outline-secondary me-1" title="View Details">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-primary" title="Update Status">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="7" class="text-center py-4">
+                                <i class="bi bi-inbox display-4 text-muted"></i>
+                                <p class="text-muted mt-2">No orders found</p>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -97,6 +103,9 @@
     }
     .badge {
         font-size: 0.85rem;
+    }
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
     }
 </style>
 
