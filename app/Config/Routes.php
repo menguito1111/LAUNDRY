@@ -48,6 +48,7 @@ $routes->group('staff', ['filter' => 'authGuard:staff'], static function (RouteC
 
     $routes->get('issues/report', 'Staff::reportIssue');
     $routes->post('issues/report', 'Staff::reportIssuePost');
+    $routes->get('chat', 'Staff::chat');
 });
 
 // Customer Pages

@@ -32,6 +32,16 @@
             </div>
         </div>
     </div>
+
+    <div class="col-md-4">
+        <div class="card bg-success text-white mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Team Chat</h5>
+                <p class="card-text">Chat with admin and staff in real time.</p>
+                <a href="<?= site_url('staff/chat') ?>" class="btn btn-light btn-sm">Open Chat</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <?= $this->endSection() ?>

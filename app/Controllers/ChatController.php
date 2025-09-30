@@ -8,8 +8,18 @@ class ChatController extends BaseController
 {
     public function index()
     {
+        $session = session();
+        $role = $session->get('role');
+        if (!in_array($role, ['admin', 'staff'], true)) {
+            return redirect()->to('/');
+        }
+
         return view('chat/index', [
-            'title' => 'Support Chat'
+            'title' => 'Support Chat',
+            'role' => $role,
+            'username' => $session->get('username'),
+            'sendUrl' => site_url('chat/send'),
+            'messagesUrl' => site_url('chat/messages')
         ]);
     }
     
@@ -18,6 +28,10 @@ class ChatController extends BaseController
         $messageModel = new ChatMessageModel();
         $userId = session()->get('id');
         $userRole = session()->get('role');
+
+        if (!in_array($userRole, ['admin', 'staff'], true)) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'error' => 'Forbidden']);
+        }
         $message = $this->request->getPost('message');
         
         if (empty(trim($message))) {
@@ -45,12 +59,22 @@ class ChatController extends BaseController
             ]);
         }
         
-        return $this->response->setJSON(['success' => false, 'error' => 'Failed to send message']);
+        return $this->response->setJSON([
+            'success' => false,
+            'error' => 'Failed to send message',
+            'details' => $messageModel->errors() ?: $messageModel->db->error()
+        ]);
     }
     
     public function getMessages()
     {
         $messageModel = new ChatMessageModel();
+        $session = session();
+        $role = $session->get('role');
+        if (!in_array($role, ['admin', 'staff'], true)) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'error' => 'Forbidden']);
+        }
+
         $lastId = $this->request->getGet('lastId') ?? 0;
         
         $messages = $messageModel->select('chat_messages.*, users.username')

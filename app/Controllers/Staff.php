@@ -113,4 +113,20 @@ class Staff extends BaseController
 
         return redirect()->to(site_url('staff/dashboard'))->with('success', 'Issue reported');
     }
+
+    public function chat()
+    {
+        $session = session();
+        $role = $session->get('role');
+        if ($role !== 'staff') {
+            return redirect()->to('/');
+        }
+        return view('chat/index', [
+            'title' => 'Staff Chat',
+            'role' => $role,
+            'username' => $session->get('username'),
+            'sendUrl' => site_url('chat/send'),
+            'messagesUrl' => site_url('chat/messages')
+        ]);
+    }
 }

@@ -16,8 +16,12 @@ class AuthGuard implements FilterInterface
             return redirect()->to('/');
         }
 
-        if ($arguments && $session->get('role') !== $arguments[0]) {
-            return redirect()->to('/');
+        if ($arguments) {
+            // Support multiple roles in a single filter usage, e.g., authGuard:admin,staff
+            $allowedRoles = is_array($arguments) ? $arguments : [$arguments];
+            if (!in_array($session->get('role'), $allowedRoles, true)) {
+                return redirect()->to('/');
+            }
         }
     }
 
